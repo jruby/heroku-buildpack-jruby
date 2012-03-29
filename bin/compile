@@ -48,7 +48,7 @@ if [ -d $BUNDLE_CACHE ]; then
   cp -r $BUNDLE_CACHE vendor/
 fi
 
-bundle install --without development:test --binstubs --deployment | indent
+jruby --1.9 -S bundle install --without development:test --binstubs --deployment | indent
 
 rm -rf $BUNDLE_CACHE
 mkdir -p $CACHE_DIR/vendor
