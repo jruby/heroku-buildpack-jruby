@@ -22,7 +22,7 @@ function indent() {
 }
 
 VERSION="1.6.7"
-JRUBY_OPTS="--1.9 -J-Xmx256m"
+JRUBY_OPTS="--1.9"
 if [ ! -d "$CACHE_DIR/jruby-$VERSION" ]; then
   echo "-----> Downloading JRuby"
   mkdir -p $CACHE_DIR
