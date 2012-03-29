@@ -18,4 +18,10 @@ For now only supports 1.9 mode, open an issue if you need 1.8 mode.
 
 Example application: [github.com/carlhoerberg/heroku-jruby-example](https://github.com/carlhoerberg/heroku-jruby-example)
 
+## Servers
+
+Recommended web servers are:
+
+* [Mizuno](https://github.com/matadon/mizuno) - A wrapper around [Jetty](http://jetty.codehaus.org/jetty/).
+* [Trinidad](https://github.com/trinidad/trinidad) - A wrapper around [Tomcat](http://tomcat.apache.org/).
 
