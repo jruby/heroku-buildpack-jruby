@@ -30,6 +30,7 @@ echo "-----> Vendoring JRuby into slug"
 ln -s $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby
 
 echo "-----> Installing Bundler"
+cd $BUILD_DIR
 PATH=$BUILD_DIR/jruby/bin:$PATH
 jgem install bundler | indent
 
