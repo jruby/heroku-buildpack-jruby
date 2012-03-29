@@ -32,6 +32,7 @@ cp -r $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby
 echo "-----> Installing Bundler"
 cd $BUILD_DIR
 PATH=$BUILD_DIR/jruby/bin:$PATH
+JRUBY_OPTS="--1.9 -J-Xmx256m"
 jgem install bundler | indent
 
 echo "-----> Installing dependencies with bundler"
