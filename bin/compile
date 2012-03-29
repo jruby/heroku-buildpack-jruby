@@ -39,8 +39,19 @@ cp -r $CACHE_DIR/jruby-$VERSION $BUILD_DIR/jruby
 
 echo "-----> Installing dependencies with Bundler"
 PATH=$BUILD_DIR/jruby/bin:$PATH
+BUNDLE_CACHE=$CACHE_DIR/bundle
+BUNDLE_DIR=$BUILD_DIR/vendor/bundle
 cd $BUILD_DIR
+
+if [ -d $BUNDLE_CACHE ]; then
+  mkdir $BUNDLE_DIR
+  cp -r $BUNDLE_CACHE $BUNDLE_DIR
+fi
+
 jruby --1.9 -S bundle install --without development:test --binstubs --deployment | indent
+
+rm -rf $BUNDLE_CACHE
+cp -r $BUNDLE_DIR $BUNDLE_CACHE
 
 echo "Dependencies installed" | indent
 
