@@ -5,7 +5,7 @@
 set -e
 
 # debug
-set -x
+#set -x
 
 # clean up leaking environment
 unset GIT_DIR
@@ -27,7 +27,7 @@ JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/1.6.7/jruby-bin-1.6.7.tar.
 curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
 
 echo "-----> Vendoring JRuby into slug"
-ln -s $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby
+cp -r $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby
 
 echo "-----> Installing Bundler"
 cd $BUILD_DIR
