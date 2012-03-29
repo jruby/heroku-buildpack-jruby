@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
 
+# fail fast
 set -e
+
+# debug
+set -x
+
+# clean up leaking environment
+unset GIT_DIR
 
 BUILD_DIR=$1
 CACHE_DIR=$2
@@ -15,8 +22,9 @@ function indent() {
 }
 
 echo "-----> Downloading JRuby"
+mkdir -p $CACHE_DIR
 JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/1.6.7/jruby-bin-1.6.7.tar.gz
-curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR
+curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
 
 echo "-----> Vendoring JRuby into slug"
 ln $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby/
