@@ -6,5 +6,8 @@ addons:
   - shared-database:5mb
 config_vars:
   PATH: jruby/bin:/usr/bin:/bin
+  RACK_ENV: production
+  RAILS_ENV: production
+  JRUBY_OPTS: --1.9 -J-Xmx256m
 default_process_types:
 EOF
