@@ -27,10 +27,10 @@ JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/1.6.7/jruby-bin-1.6.7.tar.
 curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
 
 echo "-----> Vendoring JRuby into slug"
-ln $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby/
+ln $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby
 
 echo "-----> Installing Bundler"
-PATH=jruby/bin:$PATH
+PATH=$BUILD_DIR/jruby/bin:$PATH
 jgem install bundler | indent
 
 echo "-----> Installing dependencies with bundler"
