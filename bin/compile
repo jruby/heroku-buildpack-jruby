@@ -21,24 +21,25 @@ function indent() {
   esac
 }
 
-
-if [ ! -d "$CACHE_DIR/jruby-1.6.7" ]; then
+VERSION="1.6.7"
+JRUBY_OPTS="--1.9 -J-Xmx256m"
+if [ ! -d "$CACHE_DIR/jruby-$VERSION" ]; then
   echo "-----> Downloading JRuby"
   mkdir -p $CACHE_DIR
-  JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/1.6.7/jruby-bin-1.6.7.tar.gz
+  JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/$VERSION/jruby-bin-$VERSION.tar.gz
   curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
+
+  echo "-----> Installing Bundler"
+  PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
+  jgem install bundler | indent
 fi
 
 echo "-----> Vendoring JRuby into slug"
-cp -r $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby
-
-echo "-----> Installing/updating Bundler"
-cd $BUILD_DIR
-PATH=$BUILD_DIR/jruby/bin:$PATH
-JRUBY_OPTS="--1.9 -J-Xmx256m"
-jgem update bundler | indent
+cp -r $CACHE_DIR/jruby-$VERSION $BUILD_DIR/jruby
 
 echo "-----> Installing dependencies with Bundler"
+PATH=$BUILD_DIR/jruby/bin:$PATH
+cd $BUILD_DIR
 jruby --1.9 -S bundle install --without development:test --binstubs --deployment | indent
 
 echo "Dependencies installed" | indent
