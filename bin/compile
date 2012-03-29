@@ -25,8 +25,8 @@ echo "-----> Installing Bundler"
 PATH=jruby/bin:$PATH
 jgem install bundler | indent
 
-echo "-----> Installing dependencies with bundler (without development and test)"
-bundle install --without development:test | indent
+echo "-----> Installing dependencies with bundler"
+bundle install --without development:test --binstubs --deployment | indent
 
 echo "Dependencies installed" | indent
 
