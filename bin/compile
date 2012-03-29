@@ -38,20 +38,21 @@ echo "-----> Vendoring JRuby into slug"
 cp -r $CACHE_DIR/jruby-$VERSION $BUILD_DIR/jruby
 
 echo "-----> Installing dependencies with Bundler"
-PATH=$BUILD_DIR/jruby/bin:$PATH
-BUNDLE_CACHE=$CACHE_DIR/bundle
-BUNDLE_DIR=$BUILD_DIR/vendor/bundle
 cd $BUILD_DIR
+PATH=$BUILD_DIR/jruby/bin:$PATH
+BUNDLE_CACHE=$CACHE_DIR/vendor/bundle
+BUNDLE_DIR=$BUILD_DIR/vendor/bundle
 
 if [ -d $BUNDLE_CACHE ]; then
-  mkdir -p $BUNDLE_DIR
-  cp -r $BUNDLE_CACHE $BUNDLE_DIR
+  mkdir -p vendor
+  cp -r $BUNDLE_CACHE vendor/
 fi
 
-jruby --1.9 -S bundle install --without development:test --binstubs --deployment | indent
+bundle install --without development:test --binstubs --deployment | indent
 
 rm -rf $BUNDLE_CACHE
-cp -r $BUNDLE_DIR $BUNDLE_CACHE
+mkdir -p $CACHE_DIR/vendor
+cp -r $BUNDLE_DIR $CACHE_DIR/vendor
 
 echo "Dependencies installed" | indent
 
