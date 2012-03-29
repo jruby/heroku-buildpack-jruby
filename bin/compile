@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+echo "-----> Downloading JRuby"
+JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/1.6.7/jruby-bin-1.6.7.tar.gz
+curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR
+
+echo "-----> Vendoring JRuby into slug"
+ln $CACHE_DIR/jruby-1.6.7 $BUILD_DIR/jruby/
+
+echo "-----> Installing Bundler"
+PATH=jruby/bin:$PATH
+jgem install bundler | indent
+
+echo "-----> Installing dependencies with bundler (without development and test)"
+bundle install --without development:test | indent
+
+echo "Dependencies installed" | indent
+
