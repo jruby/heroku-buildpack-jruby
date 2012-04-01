@@ -22,8 +22,11 @@ Example application: [github.com/carlhoerberg/heroku-jruby-example](https://gith
 
 Recommended web servers are:
 
-* [Mizuno](https://github.com/matadon/mizuno) - A wrapper around [Jetty](http://jetty.codehaus.org/jetty/).
-* [Trinidad](https://github.com/trinidad/trinidad) - A wrapper around [Tomcat](http://tomcat.apache.org/).
+* [Trinidad](https://github.com/trinidad/trinidad) - A wrapper around [Tomcat](http://tomcat.apache.org/)
+* [Mizuno](https://github.com/matadon/mizuno) - A wrapper around [Jetty](http://jetty.codehaus.org/jetty/)
+* [Puma](http://puma.io) - A server written in Ruby, wraps the Ragel parser (from Mongrel)
+
+A comparison can be found here: [carlhoerberg.github.com/blog/2012/03/31/jruby-application-server-benchmarks/](http://carlhoerberg.github.com/blog/2012/03/31/jruby-application-server-benchmarks/)
 
 ## License terms
 
