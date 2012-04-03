@@ -13,7 +13,7 @@ unset GIT_DIR
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-function indent() {
+function indent {
   c='s/^/       /'
   case $(uname) in
     Darwin) sed -l "$c";;
@@ -21,38 +21,86 @@ function indent() {
   esac
 }
 
+function download_jruby_and_install_default_gems {
+  if [ ! -d "$CACHE_DIR/jruby-$VERSION" ]; then
+    echo "-----> Downloading JRuby"
+    mkdir -p $CACHE_DIR
+    JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/$VERSION/jruby-bin-$VERSION.tar.gz
+    curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
+
+    echo "-----> Installing Bundler"
+    PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
+    jgem install bundler | indent
+
+    echo "-----> Installing Rake"
+    jgem install rake | indent
+  fi
+}
+
+function copy_jruby_to_build {
+  echo "-----> Vendoring JRuby into slug"
+  cp -r $CACHE_DIR/jruby-$VERSION $BUILD_DIR/jruby
+  PATH=$BUILD_DIR/jruby/bin:$PATH
+}
+
+function get_bundle_cache {
+  if [ -d $BUNDLE_CACHE ]; then
+    mkdir -p vendor
+    cp -r $BUNDLE_CACHE vendor/
+  fi
+}
+
+function store_bundle_cache {
+  rm -rf $BUNDLE_CACHE
+  mkdir -p $CACHE_DIR/vendor
+  cp -r $BUNDLE_DIR $CACHE_DIR/vendor
+}
+
+function bundle_install {
+  echo "-----> Installing dependencies with Bundler"
+
+  cd $BUILD_DIR
+  jruby -S bundle install --without development:test --binstubs --deployment | indent
+
+  echo "Dependencies installed" | indent
+}
+
+function bundle_install_with_cache {
+  BUNDLE_CACHE=$CACHE_DIR/vendor/bundle
+  BUNDLE_DIR=$BUILD_DIR/vendor/bundle
+
+  get_bundle_cache
+  bundle_install
+  store_bundle_cache
+}
+
+function install_rails_log_stdout {
+  if [ -f $BUILD_DIR/config/environment.rb ]; then
+    PLUG_DIR=$BUILD_DIR/vendor/plugins/rails_log_stdout
+    mkdir -p $PLUG_DIR
+    cd $PLUG_DIR
+    curl https://github.com/ddollar/rails_log_stdout/tarball/master -s -o - | tar xzf - 
+    cd -
+  fi
+}
+
+function install_rails3_server_static_assets {
+  if [ -f $BUILD_DIR/config/application.rb ]; then
+    PLUG_DIR=$BUILD_DIR/vendor/plugins/rails3_server_static_assets
+    mkdir -p $PLUG_DIR
+    cd $PLUG_DIR
+    curl 'https://github.com/pedro/rails3_serve_static_assets/tarball/master' -s -o - | tar xzf - 
+    cd -
+  fi
+}
+
 VERSION="1.6.7"
-JRUBY_OPTS="--1.9"
-if [ ! -d "$CACHE_DIR/jruby-$VERSION" ]; then
-  echo "-----> Downloading JRuby"
-  mkdir -p $CACHE_DIR
-  JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/$VERSION/jruby-bin-$VERSION.tar.gz
-  curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
+JRUBY_OPTS="--1.9 -J-Xmx400m"
 
-  echo "-----> Installing Bundler"
-  PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
-  jgem install bundler | indent
-fi
+download_jruby_and_install_default_gems
+copy_jruby_to_build
+bundle_install_with_cache
 
-echo "-----> Vendoring JRuby into slug"
-cp -r $CACHE_DIR/jruby-$VERSION $BUILD_DIR/jruby
-
-echo "-----> Installing dependencies with Bundler"
-cd $BUILD_DIR
-PATH=$BUILD_DIR/jruby/bin:$PATH
-BUNDLE_CACHE=$CACHE_DIR/vendor/bundle
-BUNDLE_DIR=$BUILD_DIR/vendor/bundle
-
-if [ -d $BUNDLE_CACHE ]; then
-  mkdir -p vendor
-  cp -r $BUNDLE_CACHE vendor/
-fi
-
-jruby --1.9 -S bundle install --without development:test --binstubs --deployment | indent
-
-rm -rf $BUNDLE_CACHE
-mkdir -p $CACHE_DIR/vendor
-cp -r $BUNDLE_DIR $CACHE_DIR/vendor
-
-echo "Dependencies installed" | indent
+# install_rails_log_stdout
+# install_rails3_server_static_assets
 
