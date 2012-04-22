@@ -2,7 +2,7 @@
 
 A buildpack to fast and easy use JRuby on Heroku. Just create a Heroku app like this:
 
-    heroku create -s cedar --buildpack https://github.com/carlhoerberg/heroku-buildpack-jruby.git 
+    heroku create -s cedar --buildpack https://github.com/jruby/heroku-buildpack-jruby.git 
 
 It will download and unpack JRuby from [jruby.org](http://jruby.org/), install [Bundler](http://gembundler.com/) and run ```bundle install``` and then use your ```Procfile```.
 
