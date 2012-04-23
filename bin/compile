@@ -59,7 +59,7 @@ function bundle_install {
   echo "-----> Installing dependencies with Bundler"
 
   cd $BUILD_DIR
-  jruby $JRUBY_OPTS -S bundle install --without development:test --binstubs --deployment | indent
+  jruby -S bundle install --without development:test --binstubs --deployment | indent
 
   echo "Dependencies installed" | indent
 }
@@ -93,8 +93,8 @@ function install_rails3_server_static_assets {
   fi
 }
 
+export JRUBY_OPTS="--1.9 -J-Xmx400m"
 VERSION="1.6.7"
-JRUBY_OPTS="--1.9 -J-Xmx400m"
 
 download_jruby_and_install_default_gems
 copy_jruby_to_build
