@@ -23,7 +23,7 @@ function indent {
 
 function download_jruby_and_install_default_gems {
   if [ ! -d "$CACHE_DIR/jruby-$VERSION" ]; then
-    echo "-----> Downloading JRuby"
+    echo "-----> Downloading and unpacking JRuby"
     mkdir -p $CACHE_DIR
     JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/$VERSION/jruby-bin-$VERSION.tar.gz
     curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
@@ -60,7 +60,7 @@ function bundle_install {
   echo "-----> Installing dependencies with Bundler"
 
   cd $BUILD_DIR
-  jruby -S bundle install --without development:test --binstubs --deployment | indent
+  jruby $JRUBY_OPTS -S bundle install --without development:test --binstubs --deployment | indent
 
   echo "Dependencies installed" | indent
 }
