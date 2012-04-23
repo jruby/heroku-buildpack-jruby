@@ -39,21 +39,20 @@ function download_jruby_and_install_default_gems {
 
 function copy_jruby_to_build {
   echo "-----> Vendoring JRuby into slug"
-  cp -r $CACHE_DIR/jruby-$VERSION $BUILD_DIR/jruby
+  cp -ru $CACHE_DIR/jruby-$VERSION $BUILD_DIR/jruby
   PATH=$BUILD_DIR/jruby/bin:$PATH
 }
 
 function get_bundle_cache {
   if [ -d $BUNDLE_CACHE ]; then
-    mkdir -p vendor
-    cp -r $BUNDLE_CACHE vendor/
+    mkdir -p $BUNDLE_DIR
+    cp -ru $BUNDLE_CACHE/* $BUNDLE_DIR
   fi
 }
 
 function store_bundle_cache {
-  rm -rf $BUNDLE_CACHE
-  mkdir -p $CACHE_DIR/vendor
-  cp -r $BUNDLE_DIR $CACHE_DIR/vendor
+  mkdir -p $BUNDLE_CACHE
+  cp -ru $BUNDLE_DIR/* $BUNDLE_CACHE
 }
 
 function bundle_install {
