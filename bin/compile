@@ -30,7 +30,7 @@ function download_jruby_and_install_default_gems {
     PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
 
     echo "-----> Installing JRuby-OpenSSL, Bundler and Rake"
-    jruby $JRUBY_OPTS jgem install jruby-openssl bundler rake | indent 
+    jruby $JRUBY_OPTS -S jgem install jruby-openssl bundler rake | indent 
   fi
 }
 
