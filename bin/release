@@ -3,6 +3,7 @@
 cat << EOF
 ---
 addons:
+  - shared-database:5mb
 config_vars:
   PATH: jruby/bin:/usr/bin:/bin
   RACK_ENV: production
