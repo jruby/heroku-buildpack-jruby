@@ -5,9 +5,9 @@ cat << EOF
 addons:
   - shared-database:5mb
 config_vars:
-  PATH: jruby/bin:/usr/bin:/bin
+  PATH: bin:jruby/bin:/usr/bin:/bin
   RACK_ENV: production
   RAILS_ENV: production
-  JRUBY_OPTS: --1.9 
+  JRUBY_OPTS: --1.9 -J-Xmx400m
 default_process_types:
 EOF
