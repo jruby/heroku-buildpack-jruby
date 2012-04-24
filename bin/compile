@@ -30,7 +30,7 @@ function download_jruby_and_install_default_gems {
     PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
 
     echo "-----> Installing JRuby-OpenSSL, Bundler and Rake"
-    jgem install jruby-openssl bundler rake | indent 
+    jruby $JRUBY_OPTS jgem install jruby-openssl bundler rake | indent 
   fi
 }
 
@@ -56,7 +56,7 @@ function bundle_install {
   echo "-----> Installing dependencies with Bundler"
 
   cd $BUILD_DIR
-  jruby -S bundle install --without development:test --binstubs --deployment | indent
+  jruby $JRUBY_OPTS -S bundle install --without development:test --binstubs --deployment | indent
 
   echo "Dependencies installed" | indent
 }
@@ -90,7 +90,7 @@ function install_rails3_server_static_assets {
   fi
 }
 
-export JRUBY_OPTS="--1.9 -J-Xmx400m"
+JRUBY_OPTS="--1.9 -J-Xmx400m"
 VERSION="1.6.7"
 
 download_jruby_and_install_default_gems
