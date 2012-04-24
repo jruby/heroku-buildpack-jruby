@@ -27,9 +27,12 @@ function download_jruby_and_install_default_gems {
     mkdir -p $CACHE_DIR
     JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/$VERSION/jruby-bin-$VERSION.tar.gz
     curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
+    PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
+
+    echo "-----> Installing JRuby OpenSSL"
+    jgem install jruby-openssl | indent 
 
     echo "-----> Installing Bundler"
-    PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
     jgem install bundler | indent
 
     echo "-----> Installing Rake"
