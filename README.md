@@ -24,6 +24,7 @@ To get the assets precompiled during slug compilation take the following actions
 
 1. Replace ```therubyracer``` with ```therubyrhino``` in the ```Gemfile``` (and then run ```bundle``` and commit)
 1. Add ```config.assets.initialize_on_precompile = false``` to ```config/application.rb``` 
+1. (Optional) Replace ```uglifier``` with ```closure-compiler``` and add ```config.assets.js_compressor = :closure``` to ```config/environments/production.rb```, to get faster compile times.
 
 ## Logging
 
