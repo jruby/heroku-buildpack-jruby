@@ -18,6 +18,22 @@ For now only supports 1.9 mode, open an issue if you need 1.8 mode.
 
 Example application: [github.com/carlhoerberg/heroku-jruby-example](https://github.com/carlhoerberg/heroku-jruby-example)
 
+## Assets
+
+To get the assets precompiled during slug compilation take the following actions: 
+
+1. Replace ```therubyracer``` with ```therubyrhino``` in the ```Gemfile``` (and then run ```bundle``` and commit)
+1. Add ```config.assets.initialize_on_precompile = false``` to ```config/application.rb``` 
+
+## Logging
+
+To get Heroku to pick up Rails logs you have to add the following to ```config/environments/production.rb``` 
+
+``` ruby
+STDOUT.sync = true
+config.logger = Logger.new(STDOUT) 
+``` 
+
 ## Servers
 
 Recommended web servers are:
