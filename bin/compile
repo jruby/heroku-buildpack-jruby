@@ -92,6 +92,7 @@ function install_rails3_server_static_assets {
 
 function create_database_yml {
   echo "-----> Writing config/database.yml to read from DATABASE_URL"
+  mkdir -p $BUILD_DIR/config
   cat > $BUILD_DIR/config/database.yml << EOF
 <%
 require 'cgi'
