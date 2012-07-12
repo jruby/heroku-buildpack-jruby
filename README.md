@@ -46,9 +46,9 @@ Recommended web servers are:
 
 A comparison can be found here: [carlhoerberg.github.com/blog/2012/03/31/jruby-application-server-benchmarks/](http://carlhoerberg.github.com/blog/2012/03/31/jruby-application-server-benchmarks/)
 
-## Thread safety
+## Multithreading
 
-To get the real benefits of JRuby you should enable thread safety, both in the application server of choice as well as in Rails. 
+To get the real benefits of JRuby you should enable multithreading, both in the application server of choice as well as in Rails. 
 
 ### Rails
 
@@ -56,7 +56,7 @@ Add ```config.threadsafe!``` to ```config/environments/production.rb```
 
 ### Trinidad
 
-Add the ```--threadsafe``` flag as a commandline argument to Trinidad. 
+Add the ```--threadsafe``` flag as a command line argument to Trinidad. 
 
 ```web: bin/trinidad --threadsafe --rackup -p $PORT -e $RACK_ENV```
 
