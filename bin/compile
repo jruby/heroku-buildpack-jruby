@@ -93,6 +93,7 @@ function install_rails3_server_static_assets {
 function create_database_yml {
   echo "-----> Writing config/database.yml to read from DATABASE_URL"
   cat > $BUILD_DIR/config/database.yml << EOF
+<%
 require 'cgi'
 require 'uri'
 
@@ -120,17 +121,12 @@ end
 
 adapter = uri.scheme
 adapter = "jdbcpostgresql" if adapter == "postgres"
-
 database = (uri.path || "").split("/")[1]
-
 username = uri.user
 password = uri.password
-
 host = uri.host
 port = uri.port
-
 params = CGI.parse(uri.query || "")
-
 %>
 
 <%= ENV["RAILS_ENV"] || ENV["RACK_ENV"] %>:
@@ -151,10 +147,7 @@ function precompile_assets {
   echo "-----> Precompiling assets"
 
   cd $BUILD_DIR
-  if ( jruby $JRUBY_OPTS -r openssl -S bin/rake assets:precompile | indent )
-  then echo "Assets precompiled" | indent
-  else echo "Asset precompilation failed, please see https://devcenter.heroku.com/articles/rails3x-asset-pipeline-cedar" | indent
-  fi
+  jruby $JRUBY_OPTS -r openssl -S bin/rake assets:precompile | indent
 }
 
 JRUBY_OPTS="--1.9 -J-Xmx400m"
