@@ -24,6 +24,7 @@ To get the assets precompiled during slug compilation take the following actions
 
 1. Replace ```therubyracer``` with ```therubyrhino``` in the ```Gemfile``` (and then run ```bundle``` and commit)
 1. Add ```config.assets.initialize_on_precompile = false``` to ```config/application.rb``` 
+1. Change ```config.serve_static_assets``` to ```true``` in ```config/environments/production.rb```
 1. (Optional) Replace ```uglifier``` with ```closure-compiler``` and add ```config.assets.js_compressor = :closure``` to ```config/environments/production.rb```, to get faster compile times.
 
 ## Logging
@@ -44,6 +45,20 @@ Recommended web servers are:
 * [Puma](http://puma.io) - A server written in Ruby, wraps the Ragel parser (from Mongrel)
 
 A comparison can be found here: [carlhoerberg.github.com/blog/2012/03/31/jruby-application-server-benchmarks/](http://carlhoerberg.github.com/blog/2012/03/31/jruby-application-server-benchmarks/)
+
+## Thread safety
+
+To get the real benefits of JRuby you should enable thread safety, both in the application server of choice as well as in Rails. 
+
+### Rails
+
+Add ```config.threadsafe!``` to ```config/environments/production.rb``` 
+
+### Trinidad
+
+Add the ```--threadsafe``` flag as a commandline argument to Trinidad. 
+
+```web: bin/trinidad --threadsafe --rackup -p $PORT -e $RACK_ENV```
 
 ## License terms
 
