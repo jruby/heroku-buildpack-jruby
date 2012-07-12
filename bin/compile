@@ -148,7 +148,7 @@ function precompile_assets {
   echo "-----> Precompiling assets"
 
   cd $BUILD_DIR
-  env RAILS_ENV=production DATABASE_URL=postgres://user:pass@127.0.0.1/dbname jruby $JRUBY_OPTS -r openssl -S bin/rake assets:precompile | indent
+  env DATABASE_URL=postgres://user:pass@127.0.0.1/dbname jruby $JRUBY_OPTS -r openssl -S bin/rake assets:precompile 2>&1 | indent
 }
 
 JRUBY_OPTS="--1.9 -J-Xmx400m"
