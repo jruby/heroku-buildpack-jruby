@@ -153,8 +153,7 @@ function precompile_assets {
   cd $BUILD_DIR
   if ( jruby $JRUBY_OPTS -r openssl -S bin/rake assets:precompile | indent )
   then echo "Assets precompiled" | indent
-  else 
-  then echo "Asset precompilation failed, please see https://devcenter.heroku.com/articles/rails3x-asset-pipeline-cedar" | indent
+  else echo "Asset precompilation failed, please see https://devcenter.heroku.com/articles/rails3x-asset-pipeline-cedar" | indent
   fi
 }
 
