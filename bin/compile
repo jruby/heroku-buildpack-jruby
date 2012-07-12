@@ -90,12 +90,23 @@ function install_rails3_server_static_assets {
   fi
 }
 
+function precompile_assets {
+  echo "-----> Precompiling assets"
+
+  cd $BUILD_DIR
+  jruby $JRUBY_OPTS -r openssl -S bin/rake assets:precompile | indent
+
+  echo "Assets compiled" | indent
+}
+
 JRUBY_OPTS="--1.9 -J-Xmx400m"
 VERSION="1.7.0.preview1"
 
 download_jruby_and_install_default_gems
 copy_jruby_to_build
 bundle_install_with_cache
+
+precompile_assets
 
 # install_rails_log_stdout
 # install_rails3_server_static_assets
