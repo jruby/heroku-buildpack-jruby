@@ -119,7 +119,7 @@ def attribute(name, value, force_string = false)
 end
 
 adapter = uri.scheme
-adapter = "postgresql" if adapter == "postgres"
+adapter = "jdbcpostgresql" if adapter == "postgres"
 
 database = (uri.path || "").split("/")[1]
 
