@@ -145,10 +145,13 @@ EOF
 }
 
 function precompile_assets {
-  echo "-----> Precompiling assets"
+  if ( rake --dry-run --silent asset:precompile 2> /dev/null )
+  then
+    echo "-----> Precompiling assets"
 
-  cd $BUILD_DIR
-  env DATABASE_URL=postgres://user:pass@127.0.0.1/dbname jruby $JRUBY_OPTS -S bin/rake assets:precompile 2>&1 | indent
+    cd $BUILD_DIR
+    env DATABASE_URL=postgres://user:pass@127.0.0.1/dbname jruby $JRUBY_OPTS -S bin/rake assets:precompile 2>&1 | indent
+  fi
 }
 
 JRUBY_OPTS="--1.9 -J-Xmx400m"
