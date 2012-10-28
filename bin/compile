@@ -153,7 +153,7 @@ function precompile_assets {
   fi
 }
 
-JRUBY_OPTS="--1.9 -J-Xmx400m"
+JRUBY_OPTS="--1.9 -J-Xmx400m -Xcext.enabled=true"
 VERSION="1.7.0"
 
 download_jruby_and_install_default_gems
