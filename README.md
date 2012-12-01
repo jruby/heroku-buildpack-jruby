@@ -33,7 +33,9 @@ To get Heroku to pick up Rails logs you have to add the following to ```config/e
 
 ``` ruby
 STDOUT.sync = true
-config.logger = Logger.new(STDOUT) 
+logger = Logger.new(STDOUT)
+logger.level = Logger::INFO
+config.logger = logger
 ``` 
 
 ## Servers
