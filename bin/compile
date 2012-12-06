@@ -148,7 +148,8 @@ def attribute(name, value, force_string = false)
 end
 
 adapter = uri.scheme
-adapter = "jdbcpostgresql" if adapter == "postgres"
+# Not for DataMapper
+# adapter = "jdbcpostgresql" if adapter == "postgres"
 database = (uri.path || "").split("/")[1]
 username = uri.user
 password = uri.password
