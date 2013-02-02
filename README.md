@@ -12,7 +12,7 @@ Example ```Procfile```:
 
 Note: You do normally not want to use ```bundle exec``` with JRuby. Use the binstubs (in ```bin/```) instead, and put ```require 'bundler/setup'``` before any other ```require```.
 
-Current JRuby version: 1.7.0
+Current JRuby version: 1.7.2
 
 For now only supports 1.9 mode, open an issue if you need 1.8 mode.
 
