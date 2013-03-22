@@ -2,21 +2,33 @@
 
 A buildpack to fast and easy use JRuby on Heroku. Just create a Heroku app like this:
 
-    heroku create -s cedar --buildpack https://github.com/jruby/heroku-buildpack-jruby.git 
+    heroku create --buildpack https://github.com/jruby/heroku-buildpack-jruby.git 
 
 It will download and unpack JRuby from [jruby.org](http://jruby.org/), install [Bundler](http://gembundler.com/) and run ```bundle install``` and then use your ```Procfile```.
 
 Example ```Procfile```:
 
-    web: bin/trinidad -t -r -p $PORT -e $RACK_ENV
+    web: bin/puma -p $PORT -e $RACK_ENV
 
-Note: You do normally not want to use ```bundle exec``` with JRuby. Use the binstubs (in ```bin/```) instead, and put ```require 'bundler/setup'``` before any other ```require```.
+Note: You do normally not want to use ```bundle exec``` with JRuby. Use the binstubs (in ```bin/```) instead.
 
-Current JRuby version: 1.7.2
+Current JRuby version: 1.7.3
 
 For now only supports 1.9 mode, open an issue if you need 1.8 mode.
 
 Example application: [github.com/carlhoerberg/heroku-jruby-example](https://github.com/carlhoerberg/heroku-jruby-example)
+
+## JVM version
+
+To use another JVM version, eg. 1.7 (recommended), create a file called ```system.properties``` in your root folder with the following content:
+
+```
+java.runtime.version=1.7
+```
+
+Note: Currently, supported versions are 1.6, 1.7, and 1.8. The default is 1.6.
+
+This is the same procedure as for all JVM based Heroku buildpacks: https://devcenter.heroku.com/articles/add-java-version-to-an-existing-maven-app
 
 ## Assets
 
@@ -42,9 +54,9 @@ config.logger = logger
 
 Recommended web servers are:
 
+* [Puma](http://puma.io) - A server written in Ruby, wraps the Ragel parser (from Mongrel)
 * [Trinidad](https://github.com/trinidad/trinidad) - A wrapper around [Tomcat](http://tomcat.apache.org/)
 * [Mizuno](https://github.com/matadon/mizuno) - A wrapper around [Jetty](http://jetty.codehaus.org/jetty/)
-* [Puma](http://puma.io) - A server written in Ruby, wraps the Ragel parser (from Mongrel)
 
 A comparison can be found here: [carlhoerberg.github.com/blog/2012/03/31/jruby-application-server-benchmarks/](http://carlhoerberg.github.com/blog/2012/03/31/jruby-application-server-benchmarks/)
 
