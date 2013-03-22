@@ -21,6 +21,33 @@ function indent {
   esac
 }
 
+function download_and_install_jdk {
+  curl --silent --location http://heroku-jvm-common.s3.amazonaws.com/jvm-buildpack-common.tar.gz | tar xz
+  . bin/java
+
+  # create default system.properties for apps that had the jdk vendored in
+  if [ -f ${CACHE_DIR}/.jdk/vendor ] && [ ! -f ${BUILD_DIR}/system.properties ]; then
+    echo "java.runtime.version=1.6" > ${BUILD_DIR}/system.properties
+  fi
+
+  if [ -f ${CACHE_DIR}/system.properties ] && [ ! -f ${BUILD_DIR}/system.properties ]; then
+    cp ${CACHE_DIR}/system.properties ${BUILD_DIR}/system.properties
+  fi
+
+  # install JDK
+  if [ -f ${BUILD_DIR}/system.properties ]; then
+    mkdir -p $CACHE_DIR
+    logger -p user.notice -t "slugc[$$]" "language_pack_java download_jdk"
+    LOGGER_FLAGS="$LOGGER_FLAGS download_jdk"
+    javaVersion=$(detect_java_version ${BUILD_DIR})
+    echo -n "-----> Installing OpenJDK ${javaVersion}..."
+    install_java ${BUILD_DIR} ${javaVersion}
+    jdk_overlay ${BUILD_DIR}
+    echo "done"
+    cp ${BUILD_DIR}/system.properties ${CACHE_DIR}/
+  fi
+}
+
 function download_jruby_and_install_default_gems {
   if [ ! -d "$CACHE_DIR/jruby-$VERSION" ]; then
     echo "-----> Downloading and unpacking JRuby"
@@ -30,7 +57,7 @@ function download_jruby_and_install_default_gems {
     PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
 
     echo "-----> Installing JRuby-OpenSSL, Bundler and Rake"
-    jruby $JRUBY_OPTS -S jgem install jruby-openssl bundler rake | indent 
+    jruby $JRUBY_OPTS -S jgem install jruby-openssl bundler rake | indent
   fi
 }
 
@@ -56,7 +83,7 @@ function bundle_install {
   echo "-----> Installing dependencies with Bundler"
 
   cd $BUILD_DIR
-  jruby $JRUBY_OPTS -r openssl -S bundle install --without development:test --binstubs --deployment | indent
+  jruby $JRUBY_OPTS -r openssl -S bundle install --without development:test --binstubs --deployment --clean | indent
 
   echo "Dependencies installed" | indent
 }
@@ -75,7 +102,7 @@ function install_rails_log_stdout {
     PLUG_DIR=$BUILD_DIR/vendor/plugins/rails_log_stdout
     mkdir -p $PLUG_DIR
     cd $PLUG_DIR
-    curl https://github.com/ddollar/rails_log_stdout/tarball/master -s -o - | tar xzf - 
+    curl https://github.com/ddollar/rails_log_stdout/tarball/master -s -o - | tar xzf -
     cd -
   fi
 }
@@ -85,7 +112,7 @@ function install_rails3_server_static_assets {
     PLUG_DIR=$BUILD_DIR/vendor/plugins/rails3_server_static_assets
     mkdir -p $PLUG_DIR
     cd $PLUG_DIR
-    curl 'https://github.com/pedro/rails3_serve_static_assets/tarball/master' -s -o - | tar xzf - 
+    curl 'https://github.com/pedro/rails3_serve_static_assets/tarball/master' -s -o - | tar xzf -
     cd -
   fi
 }
@@ -156,6 +183,7 @@ function precompile_assets {
 JRUBY_OPTS="-J-Xmx400m -Xcext.enabled=true"
 VERSION="1.7.3"
 
+download_and_install_jdk
 download_jruby_and_install_default_gems
 copy_jruby_to_build
 bundle_install_with_cache
