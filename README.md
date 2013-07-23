@@ -12,9 +12,9 @@ Example ```Procfile```:
 
 Note: You do normally not want to use ```bundle exec``` with JRuby. Use the binstubs (in ```bin/```) instead.
 
-Current JRuby version: 1.7.3
+Current JRuby version: 1.7.4
 
-For now only supports 1.9 mode, open an issue if you need 1.8 mode.
+For now only supports 2.0 mode, open an issue if you need 1.8 or 1.9 mode.
 
 Example application: [github.com/carlhoerberg/heroku-jruby-example](https://github.com/carlhoerberg/heroku-jruby-example)
 
