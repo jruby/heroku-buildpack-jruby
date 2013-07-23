@@ -14,7 +14,7 @@ Note: You do normally not want to use ```bundle exec``` with JRuby. Use the bins
 
 Current JRuby version: 1.7.4
 
-For now only supports 2.0 mode, open an issue if you need 1.8 or 1.9 mode.
+For now only 1.9 mode is supported, open an issue if you need 2.0 or 1.8 mode.
 
 Example application: [github.com/carlhoerberg/heroku-jruby-example](https://github.com/carlhoerberg/heroku-jruby-example)
 

@@ -180,7 +180,7 @@ function precompile_assets {
   fi
 }
 
-JRUBY_OPTS="--2.0 -J-Xmx400m -Xcext.enabled=true"
+JRUBY_OPTS="-J-Xmx400m -Xcext.enabled=true"
 VERSION="1.7.4"
 
 download_and_install_jdk
