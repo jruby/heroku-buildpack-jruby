@@ -75,6 +75,7 @@ function get_bundle_cache {
 }
 
 function store_bundle_cache {
+  rm -rf $BUNDLE_CACHE
   mkdir -p $BUNDLE_CACHE
   cp -ru $BUNDLE_DIR/* $BUNDLE_CACHE
 }
