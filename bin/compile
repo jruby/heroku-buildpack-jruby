@@ -65,6 +65,7 @@ function download_jruby_and_install_default_gems {
 
 function copy_jruby_to_build {
   echo "-----> Vendoring JRuby into slug"
+  rm -rf $CACHE_DIR/jruby-$VERSION/lib/native/{Darwin,arm-*,i386-*,ppc-*,*-FreeBSD,*-SunOS,*-Windows}
   cp -ru $CACHE_DIR/jruby-$VERSION $BUILD_DIR/jruby
   PATH=$BUILD_DIR/jruby/bin:$PATH
 }
