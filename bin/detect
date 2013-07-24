@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-if [ -f $1/Gemfile ]; then
-  echo "JRuby" && exit 0
-else
-  echo "no" && exit 1
+[ ! -f $1/Gemfile ] && echo "No Gemfile found" && exit 1
+
+if [[ `grep "^ruby.*engine.*jruby" $1/Gemfile` ]]
+then echo "JRuby" && exit 0
+else echo "No ruby line in Gemfile found" && exit 1
 fi
