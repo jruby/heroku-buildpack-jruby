@@ -186,7 +186,7 @@ VERSION=`grep ^ruby $BUILD_DIR/Gemfile | sed 's/.*version[^0-9]*\([0-9\.]*\).*/\
 # Try find preferred Ruby mode in the Gemfile
 MODE=`grep ^ruby $BUILD_DIR/Gemfile | cut -c 7-9`
 
-JRUBY_OPTS="--$MODE -J-Xmx400m -Xcext.enabled=true"
+export JRUBY_OPTS="--$MODE -J-Xmx400m -Xcext.enabled=true"
 
 download_and_install_jdk
 download_jruby_and_install_default_gems
