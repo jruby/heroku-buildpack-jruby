@@ -12,9 +12,17 @@ Example ```Procfile```:
 
 Note: You do normally not want to use ```bundle exec``` with JRuby. Use the binstubs (in ```bin/```) instead.
 
-Current JRuby version: 1.7.4
+A ```Gemfile``` with a "ruby" line is required. So to use JRuby 1.7.4 in 2.0 mode, put this in you ```Gemfile```:
 
-For now only 1.9 mode is supported, open an issue if you need 2.0 or 1.8 mode.
+    ruby '2.0.0', engine: 'jruby', engine_version: '1.7.4'
+
+If you change Ruby version, ie. JRuby mode, don't forget to update ```JRUBY_OPTS```. The buildpack can only set environment variables on first push. 
+
+    $ heroku config:add JRUBY_OPTS="--2.0 -J-Xmx400m -J-XX:+UseCompressedOops -J-noverify"
+
+Otherwise you might end up with errors such as: 
+
+    Bundler::RubyVersionMismatch: Your Ruby version is 1.9.3, but your Gemfile specified 2.0.0
 
 Example application: [github.com/carlhoerberg/heroku-jruby-example](https://github.com/carlhoerberg/heroku-jruby-example)
 
