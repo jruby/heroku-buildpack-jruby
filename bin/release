@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MODE=`grep ^ruby $BUILD_DIR/Gemfile | cut -c 7-9`
+MODE=`grep ^ruby $1/Gemfile | cut -c 7-9`
 cat << EOF
 ---
 addons:

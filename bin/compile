@@ -5,7 +5,7 @@
 set -e
 
 # debug
-set -x
+#set -x
 
 # clean up leaking environment
 unset GIT_DIR
