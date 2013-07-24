@@ -50,9 +50,11 @@ function download_and_install_jdk {
 
 function download_jruby_and_install_default_gems {
   if [ ! -d "$CACHE_DIR/jruby-$VERSION" ]; then
-    echo "-----> Downloading and unpacking JRuby"
     mkdir -p $CACHE_DIR
+    echo "-----> Deleting previous JRuby installations if any"
+    rm -rf $CACHE_DIR/jruby-*
     JRUBY_TAR=http://jruby.org.s3.amazonaws.com/downloads/$VERSION/jruby-bin-$VERSION.tar.gz
+    echo "-----> Downloading and unpacking JRuby"
     curl $JRUBY_TAR -s -o - | tar xzf - -C $CACHE_DIR/
     PATH=$CACHE_DIR/jruby-$VERSION/bin:$PATH
 
