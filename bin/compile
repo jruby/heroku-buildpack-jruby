@@ -176,10 +176,17 @@ EOF
 
 function precompile_assets {
   cd $BUILD_DIR
-  if ( jruby $JRUBY_OPTS -S bin/rake --dry-run --silent assets:precompile > /dev/null 2>&1 )
+  if [ -f $BUILD_DIR/public/assets/manifest.yml ]
   then
-    echo "-----> Precompiling assets"
-    env DATABASE_URL=postgres://user:pass@127.0.0.1/dbname jruby $JRUBY_OPTS -S bin/rake assets:precompile 2>&1 | indent
+      echo "Detected manifest.yml, assuming assets were compiled locally"
+  else
+      if ( jruby $JRUBY_OPTS -S bin/rake --dry-run --silent assets:precompile > /dev/null 2>&1 )
+      then
+          echo "-----> Precompiling assets"
+          env DATABASE_URL=postgres://user:pass@127.0.0.1/dbname jruby $JRUBY_OPTS -S bin/rake assets:precompile 2>&1 | indent
+      else
+          echo "Precompile assets dry run failed!"
+      fi
   fi
 }
 
@@ -200,4 +207,3 @@ precompile_assets
 
 # install_rails_log_stdout
 # install_rails3_server_static_assets
-
